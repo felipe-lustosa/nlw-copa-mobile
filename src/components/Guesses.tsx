@@ -3,12 +3,14 @@ import { Box, FlatList, useToast } from "native-base";
 import { api } from "../services/api";
 import { Game, GameProps } from "../components/Game";
 import { Loading } from "./Loading";
+import { EmptyMyPoolList } from "./EmptyMyPoolList";
 
 interface Props {
     poolId: string;
+    code: string;
 }
 
-export function Guesses({ poolId }: Props) {
+export function Guesses({ poolId, code }: Props) {
     const [isLoading, setIsLoading] = useState(true);
     const [games, setGames] = useState<GameProps[]>([]);
     const [firstTeamPoints, setFirstTeamPoints] = useState("");
@@ -54,5 +56,5 @@ export function Guesses({ poolId }: Props) {
 
     if (isLoading) <Loading />;
 
-    return <FlatList data={games} keyExtractor={(item) => item.id} renderItem={({ item }) => <Game data={item} setFirstTeamPoints={setFirstTeamPoints} setSecondTeamPoints={setSecondTeamPoints} onGuessConfirm={() => handleGuessConfirm(item.id)} />} />;
+    return <FlatList data={games} keyExtractor={(item) => item.id} renderItem={({ item }) => <Game data={item} setFirstTeamPoints={setFirstTeamPoints} setSecondTeamPoints={setSecondTeamPoints} onGuessConfirm={() => handleGuessConfirm(item.id)} />} ListEmptyComponent={() => <EmptyMyPoolList code={code} />} />;
 }
